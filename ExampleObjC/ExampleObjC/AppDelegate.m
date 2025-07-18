@@ -18,8 +18,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     LifetimeTrackerDashboardIntegration *dashboardIntegration = [LifetimeTrackerDashboardIntegration new];
-    [dashboardIntegration setVisibleWhenIssueDetected];
-    [dashboardIntegration useBarStyle];
+    [dashboardIntegration setAlwaysVisible];
+    [dashboardIntegration useCircularStyle];
     [LifetimeTracker setupOnLeakDetected:^(Entry * _Nonnull entry, EntriesGroup * _Nonnull group) {
         NSLog(@"Leak info:%@-%@",entry.name,group.name);
     } onUpdate:^(NSDictionary<NSString *,EntriesGroup *> * groups) {

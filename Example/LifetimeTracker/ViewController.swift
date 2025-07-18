@@ -23,11 +23,25 @@ class DetailItem: LifetimeTrackable {
     }
 }
 
+// fengchiwei 最多支持到两层，界面的上只能显示到 "Warrper Detail Item" 跟 其子类，不能处理到 DetailItem
+// 的 "Detail Item",其实跟继承关系无关，底层无法监控继承关系的，都是获取对象的 lifetimeConfiguration 处理，
+// 里面有 groupName 代表是在某个组里面，self的名字是组的某个元素，可以控制组的上线，也可以控制某个对象的上限,
+// groupName 很容易让人误会是基类，其实没啥关系。
+class WarrperDetailItem: DetailItem {
+
+    override class var lifetimeConfiguration: LifetimeConfiguration {
+        // There can be up to three 3 instances from the class. But only three in total including the subclasses
+        return LifetimeConfiguration(maxCount: 6, groupName: "Warrper Detail Item", groupMaxCount: 30)
+    }
+}
+
 // MARK: - DetailItem Subclasses
 
-class AudtioDetailItem: DetailItem { }
-class ImageDetailItem: DetailItem { }
-class VideoDetailItem: DetailItem {
+class AudtioDetailItem: WarrperDetailItem { }
+
+class ImageDetailItem: WarrperDetailItem { }
+
+class VideoDetailItem: WarrperDetailItem {
 
     override class var lifetimeConfiguration: LifetimeConfiguration {
         // There should only be one video item as the memory usage is too high
@@ -43,7 +57,7 @@ var leakStorage = [AnyObject]()
 
 class ViewController: UIViewController, LifetimeTrackable {
     
-    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "VC")
+    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 2, groupName: "VC")
 
     // MARK: - Initialization
 
@@ -63,6 +77,7 @@ class ViewController: UIViewController, LifetimeTrackable {
     // MARK: - IBActions
 
     @IBAction func createLeak(_ sender: Any) {
+                     
         leakStorage.append(ViewController())
 
         leakStorage.append(AudtioDetailItem())

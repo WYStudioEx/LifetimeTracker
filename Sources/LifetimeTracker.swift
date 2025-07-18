@@ -230,6 +230,8 @@ public extension LifetimeTrackable {
         self.onLeakDetected = onLeakDetected
     }
     
+    // fengchiwei 这里没有持有 instance，连weak都没有，是在 onDealloc 里面设置一个关联对象，利用关联对象的释放判断
+    // 个数是否减少
     public func track(_ instance: Any, configuration: LifetimeConfiguration, file: String = #file) {
         lock.lock()
         defer {

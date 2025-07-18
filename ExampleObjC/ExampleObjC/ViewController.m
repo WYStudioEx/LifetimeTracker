@@ -35,7 +35,7 @@
 }
 
 + (LifetimeConfiguration *)lifetimeConfiguration {
-    return [[LifetimeConfiguration alloc] initWithMaxCount:1 groupName:@"VC"];
+    return [[LifetimeConfiguration alloc] initWithMaxCount:5 groupName:@"VC"];
 }
 
 - (IBAction)createLeaks:(id)sender {
