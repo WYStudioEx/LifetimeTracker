@@ -24,8 +24,8 @@ class DetailItem: LifetimeTrackable {
 }
 
 // fengchiwei 最多支持到两层，界面的上只能显示到 "Warrper Detail Item" 跟 其子类，不能处理到 DetailItem
-// 的 "Detail Item",其实跟继承关系无关，底层无法监控继承关系的，都是获取对象的 lifetimeConfiguration 处理，
-// 里面有 groupName 代表是在某个组里面，self的名字是组的某个元素，可以控制组的上线，也可以控制某个对象的上限,
+// 的 "Detail Item" 组, 其实跟继承关系无关，底层无法监控继承关系的，都是获取对象的 lifetimeConfiguration 处理，
+// 里面有 groupName 代表是在某个组里面，可以控制组的上线，也可以控制某个对象的上限,
 // groupName 很容易让人误会是基类，其实没啥关系。
 class WarrperDetailItem: DetailItem {
 
@@ -39,16 +39,18 @@ class WarrperDetailItem: DetailItem {
 
 class AudtioDetailItem: WarrperDetailItem { }
 
-class ImageDetailItem: WarrperDetailItem { }
-
-class VideoDetailItem: WarrperDetailItem {
-
+class ImageDetailItem: WarrperDetailItem {
     override class var lifetimeConfiguration: LifetimeConfiguration {
         // There should only be one video item as the memory usage is too high
         let configuration = super.lifetimeConfiguration
         configuration.maxCount = 1
         return configuration
     }
+}
+
+class VideoDetailItem: ImageDetailItem {
+
+    
 }
 
 // MARK: - ViewController -
